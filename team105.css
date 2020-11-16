@@ -1,0 +1,127 @@
+
+.pathHidden {
+    fill: none;
+    stroke: #000;
+    stroke-width: 0px;
+    stroke-dasharray: 5;
+  }
+  
+  .pathVisible {
+    fill: none;
+    stroke: rgb(70, 70, 70);
+    stroke-width: 0.5px;
+    stroke-dasharray: 2;
+  }
+  
+  
+  
+  .circle {
+    fill: steelblue;
+  }
+  
+  .pointVisible {
+    fill: steelblue;
+    stroke: #fff;
+    stroke-width: 0.25px;
+    r: 1px;
+  }
+  
+  .pointHidden {
+    fill: steelblue;
+    stroke: #fff;
+    stroke-width: 0px;
+    r: 0px;
+  }
+  
+  .play {
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-left: 12px solid #000;
+      border-bottom: 8px solid transparent;
+      float: left;
+      margin-left: 3px;
+      margin-right: 3px;
+  }
+  .pause {
+      width: 4px;
+      height: 16px;
+      border-right: 4px solid #000;
+      border-left: 4px solid #000;
+      float: left;
+      margin-left: 3px;
+      margin-right: 3px;
+  }
+  
+  .stepforward {
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-left: 12px solid #000;
+      border-bottom: 8px solid transparent;
+      float: left;
+      margin-left: 3px;
+      margin-right: 3px;
+  }
+  
+  .stepforwardunavailable {
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-left: 12px solid rgb(150,150,150);
+      border-bottom: 8px solid transparent;
+      float: left;
+      margin-left: 3px;
+      margin-right: 3px;
+  }
+  
+  .stepbackward {
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-right: 12px solid #000;
+      border-bottom: 8px solid transparent;
+      float: left;
+      margin-left: 3px;
+      margin-right: 3px;
+  }
+  
+  .stepbackwardunavailable {
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-right: 12px solid rgb(150,150,150);
+      border-bottom: 8px solid transparent;
+      float: left;
+      margin-left: 3px;
+      margin-right: 3px;
+  }
+  
+  #tooltipcontainersemsan {
+    width:300;
+    height:200;
+  }
+  
+  .tick {/*used to make the axis text unselectable*/
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+  }
+  
+  .names {
+    fill: none;
+    stroke: #fff;
+    stroke-linejoin: round;
+  }
+  
+  .svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+  }
+  
