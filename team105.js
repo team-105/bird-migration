@@ -18,7 +18,13 @@ d3.dsv(",", "data.csv", function(d) {//Note that the .csv needs to be ordered by
             x:parseFloat(d['long_mean']),
             y:parseFloat(d['lat_mean']),
             species:d['Species'],
-            speciescode:d['Species_code']
+            speciescode:d['Species_code'],
+            c1:d['cluster2'],
+            c2:d['cluster3'],
+            c3:d['cluster4'],
+            hc2:d['hcluster2'],
+            hc3:d['hcluster3'],
+            hc4:d['hcluster4']
         });
     }else{
         dataset.push({
@@ -26,7 +32,13 @@ d3.dsv(",", "data.csv", function(d) {//Note that the .csv needs to be ordered by
             y:parseFloat(d['lat_mean']),
             species:d['Species'],
             speciescode:d['Species_code'],
-            dist:parseFloat(d['dist'])
+            dist:parseFloat(d['dist']),
+            c2:d['cluster2'],
+            c3:d['cluster3'],
+            c4:d['cluster4'],
+            hc2:d['hcluster2'],
+            hc3:d['hcluster3'],
+            hc4:d['hcluster4']
         });
     }
 
@@ -38,7 +50,7 @@ d3.dsv(",", "data.csv", function(d) {//Note that the .csv needs to be ordered by
 }).then(function(data) {
 
 //Could do species, week(ascending) ordering here
-console.log(dataset);
+//console.log(dataset);
 
 
 //Get the object keys
@@ -61,8 +73,8 @@ for(i=0;i<numPaths;i++){
     }
     seriesPath.push(tempSeries);
 }
-console.log('seriesPath');
-console.log(seriesPath);
+//console.log('seriesPath');
+//console.log(seriesPath);
 
 //document.getElementById('log').innerHTML='Creating series for points';
 //Create a series for making the points
@@ -70,8 +82,8 @@ var seriesPoints=[];
 for(i=0;i<dataset.length;i++){
     seriesPoints.push({x:dataset[i]['x'],y:dataset[i]['y'],speciescode:dataset[i]['speciescode']});
 }
-console.log('seriesPoints');
-console.log(seriesPoints);
+//console.log('seriesPoints');
+//console.log(seriesPoints);
 
 
 //Create SVG
@@ -80,6 +92,8 @@ var svg=d3.select('#visualization').append('svg')
     .attr('height',h+margin.top+margin.bottom)
     //.append('g')
     .attr('transform','translate('+margin.left+','+margin.top+')');
+    //.attr("preserveAspectRatio", "xMinYMin meet").attr("viewBox", "0 0 1500 900")
+    //.classed("svg-content-responsive", true).attr("width", "100%").attr("height", "100%");
     //.attr("viewBox", "50 0 600 600")
     //.classed("svg-content-responsive", true).attr("width", "100%").attr("height", "100%");
 
@@ -117,7 +131,7 @@ geo.append("g")
     .attr("d", geopath)
     .style("fill", "lightgray")
     .style("stroke", "black")
-    .style("stroke-width", 0.3)
+    .style("stroke-width", 0.3);
 
 }
 
@@ -227,8 +241,8 @@ if(dataset[0]['dist']==undefined){//If distances were not pre-processed, then pr
         }
     }
 }
-console.log("dataset");
-console.log(dataset);
+//console.log("dataset");
+//console.log(dataset);
 
 
 
@@ -288,11 +302,17 @@ for(i=0;i<numPaths;i++){
         y:dataset[i*numPoints]['y'],
         species:dataset[i*numPoints]['species'],
         speciescode:dataset[i*numPoints]['speciescode'],
-        transition:tempTransition
+        transition:tempTransition,
+        c2:dataset[i*numPoints]['c2'],
+        c3:dataset[i*numPoints]['c3'],
+        c4:dataset[i*numPoints]['c4'],
+        hc2:dataset[i*numPoints]['hc2'],
+        hc3:dataset[i*numPoints]['hc3'],
+        hc4:dataset[i*numPoints]['hc4']
     });
 }
-console.log('seriesCircles');
-console.log(seriesCircles);
+//console.log('seriesCircles');
+//console.log(seriesCircles);
 
 //Circle parmeters
 var circleRadius=3;
@@ -508,60 +528,63 @@ for(i=0;i<seriesCircles.length;i++){
 }
 
 //Color selection
-//Default
-var elemcontainer=document.createElement('div');
+listOptions=['Default','2 Clusters','3 Clusters','4 Clusters','2 Clusters (Hierarchical)','3 Clusters (Hierarchical)','4 Clusters (Hierarchical)'];
+listOptionsCluster=['d','c2','c3','c4','hc2','hc3','hc4'];
+colorSchemeTableau10=['#4682b4','#4e79a7','#f28e2c','#e15759','#76b7b2','#59a14f','#edc949','#af7aa1','#ff9da7','#9c755f','#bab0ab'];//#4268b4 is default
 
-var elem=document.createElement('input');
-elem.setAttribute('type','radio');
-elem.checked=true;
-elem.name='radiocolor';
-elem.style.display='inline-block';
-elemcontainer.appendChild(elem);
+function changeCircleColor(cluster){
+    console.log(cluster=='d');
+    if(cluster=='d'){
+        d3.selectAll('.circle')
+            .each(function(d){
+                d3.select(this)//Get each tooltip, note that the data is based on the seriesCircles variable
+                    .style('fill',colorSchemeTableau10[0]); 
+            });
+    }else{
+    d3.selectAll('.circle')
+        .each(function(d){
+            d3.select(this)//Get each tooltip, note that the data is based on the seriesCircles variable
+                .style('fill',colorSchemeTableau10[parseInt(d[cluster])+1]); 
+        });
+    }
+}
 
-var elem=document.createElement('div');
-elem.style.display='inline-block';
-elem.style.fontFamily='arial';
-elem.style.fontSize='14px';
-elem.innerHTML='Default';
-elemcontainer.appendChild(elem);
+for(var i=0;i<listOptions.length;i++){
+    try{throw i}
+    catch(ii){//catch block of try/catch has its own scope
+        var elemcontainer=document.createElement('div');
 
-document.getElementById('colorby').appendChild(elemcontainer);
+        var elem=document.createElement('input');
+        elem.setAttribute('type','radio');
+        elem.setAttribute('id','radio'+ii);
+        elem.setAttribute('onclick','changeCircleColor('+listOptionsCluster[ii]+')');//for FF
+        elem.onclick=function() {changeCircleColor(listOptionsCluster[ii])};//for IE
+        elem.checked=true;
+        elem.name='radiocolor';
+        elem.style.display='inline-block';
+        elemcontainer.appendChild(elem);
 
-var elemcontainer=document.createElement('div');
+        var elem=document.createElement('div');
+        elem.style.display='inline-block';
+        elem.style.fontFamily='arial';
+        elem.style.fontSize='14px';
+        elem.innerHTML=listOptions[ii];
+        elemcontainer.appendChild(elem);
 
-//Velocity
-var elem=document.createElement('input');
-elem.setAttribute('type','radio');
-elem.name='radiocolor';
-elem.style.display='inline-block';
-elemcontainer.appendChild(elem);
+        document.getElementById('colorby').appendChild(elemcontainer);
+    }
+}
 
-var elem=document.createElement('div');
-elem.style.display='inline-block';
-elem.style.fontFamily='arial';
-elem.style.fontSize='14px';
-elem.innerHTML='Velocity';
-elemcontainer.appendChild(elem);
+//Default colors
+// Get all radios, then simply emulate a click on the first one
+radioDefault=document.getElementById('radio0');
+radioDefault.checked=true;
 
-document.getElementById('colorby').appendChild(elemcontainer);
-
-//Classification
-var elemcontainer=document.createElement('div');
-
-var elem=document.createElement('input');
-elem.setAttribute('type','radio');
-elem.name='radiocolor';
-elem.style.display='inline-block';
-elemcontainer.appendChild(elem);
-
-var elem=document.createElement('div');
-elem.style.display='inline-block';
-elem.style.fontFamily='arial';
-elem.style.fontSize='14px';
-elem.innerHTML='Classification';
-elemcontainer.appendChild(elem);
-
-document.getElementById('colorby').appendChild(elemcontainer);
+d3.selectAll('.circle')
+    .each(function(d){
+        d3.select(this)//Get each tooltip, note that the data is based on the seriesCircles variable
+            .style('fill',colorSchemeTableau10[0]); 
+    });
 
 
 //Play pause button
