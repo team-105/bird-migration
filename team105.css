@@ -15,19 +15,17 @@
   
   
   
-  .circle {
-    fill: steelblue;
-  }
+  
   
   .pointVisible {
-    fill: steelblue;
+    fill: rgb(70, 70, 70);
     stroke: #fff;
     stroke-width: 0.25px;
     r: 1px;
   }
   
   .pointHidden {
-    fill: steelblue;
+    fill: rgb(70, 70, 70);
     stroke: #fff;
     stroke-width: 0px;
     r: 0px;
