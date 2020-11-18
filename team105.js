@@ -91,9 +91,9 @@ var svg=d3.select('#visualization').append('svg')
 	//.attr('width',width).attr('height',height)
     //.append('g')
     //.attr('transform','translate('+margin.left+','+margin.top+')');
-    .attr("preserveAspectRatio", "xMinYMin meet").attr("viewBox", "-100 0 1000 750")
+    .attr("preserveAspectRatio", "xMinYMin meet").attr("viewBox", "-100 0 1000 600")
     .classed("svg-content-responsive", true)
-	.attr("width", "65%").attr("height", "100%");
+	.attr("width", "65%").attr("height", "80%");
 
 var gw = 1193.83 - (1193.83 / 36.0) + 34
 var gh = 596.933 - (596.933 / 18.0) + 33
