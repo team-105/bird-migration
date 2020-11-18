@@ -98,7 +98,7 @@ var svg=d3.select('#visualization').append('svg')
 var gw = 1193.83 - (1193.83 / 36.0) + 34
 var gh = 596.933 - (596.933 / 18.0) + 33
 		
-var svg1 = svg.append("svg").attr("width", gw).attr("height", gh)
+var svg1 = svg.append("svg").attr("width", gw+1).attr("height", gh+1)
 	//.attr('transform','translate(35, 20)')
 
 latMin=-90;
@@ -159,8 +159,6 @@ geo.append("path")
 
 }
 
-
-
 var zoom = d3.zoom()
     .scaleExtent([1, 20])
     //.extent([[0, 0], [w, h]])
@@ -174,10 +172,10 @@ var yScale=d3.scaleLinear()
     .domain([latMin,latMax])
     .range([gh, 0]);
 
-var xAxis=d3.axisBottom(xScale)
+var xAxis=d3.axisTop(xScale)
     .ticks((longMax-longMin)/9)
 	//.tickSize(-gh)
-var yAxis=d3.axisLeft(yScale)
+var yAxis=d3.axisRight(yScale)
     .ticks((latMax-latMin)/9)
 	//.tickSize(-gw)
 /*var xAxis = d3.axisBottom(xScale)
@@ -192,11 +190,11 @@ var yAxis = d3.axisRight(yScale)
 
 gX=svg1.append('g')
 	.attr('class','xaxis')
-	.attr('transform','translate(0,'+(gh - 33)+')')
+	.attr('transform','translate(0,'+(gh)+')')
     .call(xAxis);
 gY=svg1.append('g')
     .attr('class','yaxis')
-    .attr('transform','translate(34, 0)')
+    .attr('transform','translate(0, 0)')
     .call(yAxis);    
 
 svg.call(zoom);
