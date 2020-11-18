@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
-<script type="text/javascript" src="lib/d3.v5.min.js"></script>
-<script type="text/javascript" src="lib/d3-dsv.min.js"></script>
-<script type="text/javascript" src="lib/d3-tip.min.js"></script>
-<script type="text/javascript" src="lib/d3-legend.min.js"></script>
-<script type="text/javascript" src="lib/topojson.v2.min.js"></script>
-<script type="text/javascript" src="lib/d3-geo-projection.v2.min.js"></script>
+<script type="text/javascript" src="../lib/d3.v5.min.js"></script>
+<script type="text/javascript" src="../lib/d3-dsv.min.js"></script>
+<script type="text/javascript" src="../lib/d3-tip.min.js"></script>
+<script type="text/javascript" src="../lib/d3-legend.min.js"></script>
+<script type="text/javascript" src="../lib/topojson.v2.min.js"></script>
+<script type="text/javascript" src="../lib/d3-geo-projection.v2.min.js"></script>
 
 
 
@@ -16,28 +16,32 @@
     <link rel="stylesheet" href="team105.css">
 </head>
 <body>
-<div style='margin-left:50px;'>
-  <div style='font-weight:bold;font-size:40px;font-family:arial;'>Visualizing Bird Migration</div>
+<div id='test' style='margin-left:50px;'>
+  <div style='font-weight:bold;font-size:30px;font-family:arial;'>Visualizing Bird Migration</div>
   <div style='font-size:20px;font-family:arial;'>CSE6242 team105</div>
   <div style='font-size:12px;font-family:arial;'>*Note that positions over time are obtained by spatial means. 
   Some coastal species span across multiple coastal regions, so the spatial mean could appear off land.</div>
   <br>
+<div id="container" >
+	<div id='animateContainer' style='float:left; width:78%;'>
+      <div id='week'></div>
+      <!--<div id='stepbackward' class='stepbackwardunavailable'></div>-->
+      <div id='playpause' class='pause'></div>
+      <!--<div id='stepforward' class='stepforwardunavailable'></div>-->
+	  <div id='visualization' style='float:left;width:1100px;overflow:hidden;z-index:-1;'></div>
+	</div>
 
-  <div id='visualization' style='position:absolute;overflow:hidden;z-index:-1;'></div>
+  
 
-  <div id='filtercontainer' style='float:right;width:250px;margin-top:30px;margin-right:50px;z-index:10;background-color:rgba(255,255,255,0.7)'>
+  <div id='filtercontainer' style='float:left; width:20%;margin-right:2%;z-index:10;background-color:rgba(255,255,255,0.7)'>
     <div style='font-family:arial;font-size:16px;font-weight:bold;opacity:1;'>Species Selection</div>
-    <div id='selectionspecies' style='height:520px;overflow:auto;'></div>
+    <div id='selectionspecies' style='height:350px;overflow:auto;'></div>
     <br>
     <div style='font-family:arial;font-size:16px;font-weight:bold;'>Color By</div>
     <div id='colorby'></div>
   </div>
   
-  <div id='animateContainer' style='position:fixed;'>
-      <div id='week'></div>
-      <!--<div id='stepbackward' class='stepbackwardunavailable'></div>-->
-      <div id='playpause' class='pause'></div>
-      <!--<div id='stepforward' class='stepforwardunavailable'></div>-->
+  
   </div>
 </div>
 
