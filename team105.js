@@ -1,13 +1,13 @@
 window.onload=function(){
 
-var width=1600;
-var height=800;
+var width=1300;
+var height=600;
 
-var margin = {top: 0, right: 50, bottom: 50, left: 150}
+var margin = {top: 0, right: 250, bottom: 0, left: 150}
 //w = window.innerWidth - margin.left - margin.right // Use the window's width 
 //h = window.innerHeight - margin.top - margin.bottom; // Use the window's height
-w=width-margin.left-margin.right;
-h=height-margin.top-margin.bottom;
+var w=width-margin.left-margin.right;
+var h=height-margin.top-margin.bottom;
 
 
 var dataset=[];
@@ -88,34 +88,44 @@ for(i=0;i<dataset.length;i++){
 
 //Create SVG
 var svg=d3.select('#visualization').append('svg')
-	.attr('width',w+margin.left+margin.right)
-    .attr('height',h+margin.top+margin.bottom)
+	//.attr('width',width).attr('height',height)
     //.append('g')
-    .attr('transform','translate('+margin.left+','+margin.top+')');
-    //.attr("preserveAspectRatio", "xMinYMin meet").attr("viewBox", "0 0 1500 900")
-    //.classed("svg-content-responsive", true).attr("width", "100%").attr("height", "100%");
-    //.attr("viewBox", "50 0 600 600")
-    //.classed("svg-content-responsive", true).attr("width", "100%").attr("height", "100%");
+    //.attr('transform','translate('+margin.left+','+margin.top+')');
+    .attr("preserveAspectRatio", "xMinYMin meet").attr("viewBox", "-100 0 1000 750")
+    .classed("svg-content-responsive", true)
+	.attr("width", "65%").attr("height", "100%");
+
+var gw = 1193.83 - (1193.83 / 36.0) + 34
+var gh = 596.933 - (596.933 / 18.0) + 33
+		
+var svg1 = svg.append("svg").attr("width", gw).attr("height", gh)
+	//.attr('transform','translate(35, 20)')
 
 latMin=-90;
 latMax=90;
 longMin=-180;
 longMax=180;
 
-geo=svg.append('g')
+geo=svg1.append('g')
     .attr('id','geo')
-    .attr('transform','translate(20,10)');
+    //.attr('transform','translate(20,10)');
 
-content=svg.append('g')
+content=svg1.append('g')
     .attr('id','content')
-    .attr('transform','translate(20,10)');
+    //.attr('transform','translate(20,10)');
 
 
 const projection = d3.geoEquirectangular()
-    .scale(240)
-    //.translate([692.6749999999998, 347.0914981877568])
-    .translate([740, 370]);
+    .scale(190)
+    .translate([597.8340277777777, 298.8850277777778])
+    //.translate([600, 300]);
+	
 const geopath = d3.geoPath().projection(projection);
+
+var graticule = d3.geoGraticule()
+
+//data for sample elements
+//var dotSpot = [[-70,70], [-80,80], [0,0]];
 
 var promise1 = d3.json("custom.geo.json");
 Promise.all([promise1])
@@ -132,6 +142,20 @@ geo.append("g")
     .style("fill", "lightgray")
     .style("stroke", "black")
     .style("stroke-width", 0.3);
+	
+geo.append("path")
+	.datum(graticule)
+	.attr("class", "graticule")
+	.attr("d", geopath);
+	
+//circles to test interactivity features
+/*geo.selectAll("circle")
+	.data(dotSpot).enter()
+	.append("circle")
+	.attr("cx", function (d,i) { return projection(d)[0]; })
+	.attr("cy", function (d,i) { return projection(d)[1]; })
+	.attr("r", "3px")
+	.style("fill", "red");*/
 
 }
 
@@ -139,30 +163,40 @@ geo.append("g")
 
 var zoom = d3.zoom()
     .scaleExtent([1, 20])
-    .extent([[0, 0], [w, h]])
-    .translateExtent([[0, 0], [w, h]])
+    //.extent([[0, 0], [w, h]])
+    //.translateExtent([[0, 0], [w, h]])
     .on("zoom", zoomed);
 
 var xScale=d3.scaleLinear()
     .domain([longMin,longMax])
-    .range([0, w]);
+    .range([0, gw]);
 var yScale=d3.scaleLinear()
     .domain([latMin,latMax])
-    .range([h,0]);
+    .range([gh, 0]);
 
 var xAxis=d3.axisBottom(xScale)
-    .ticks((longMax-longMin)/9);
+    .ticks((longMax-longMin)/9)
+	//.tickSize(-gh)
 var yAxis=d3.axisLeft(yScale)
-    .ticks((latMax-latMin)/9);
+    .ticks((latMax-latMin)/9)
+	//.tickSize(-gw)
+/*var xAxis = d3.axisBottom(xScale)
+	.ticks((w + 2) / (h + 2) * 10)
+	.tickSize(h)
+	.tickPadding(8 - h);
 
+var yAxis = d3.axisRight(yScale)
+	.ticks(10)
+	.tickSize(w)
+	.tickPadding(8 - w);*/
 
-gX=svg.append('g')
+gX=svg1.append('g')
 	.attr('class','xaxis')
-	.attr('transform','translate(20,'+(h+10)+')')
+	.attr('transform','translate(0,'+(gh - 33)+')')
     .call(xAxis);
-gY=svg.append('g')
+gY=svg1.append('g')
     .attr('class','yaxis')
-    .attr('transform','translate(20,10)')
+    .attr('transform','translate(34, 0)')
     .call(yAxis);    
 
 svg.call(zoom);
